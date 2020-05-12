@@ -1,11 +1,69 @@
+/* app.css */
+
 html, body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  height: 100%;
 }
 
-.tc {
-  text-align: center;
+.md-modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+	width: 50%;
+	max-width: 630px;
+	min-width: 320px;
+  margin: 0 auto;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+  background-color: var(--background-body);
 }
 
-code, .code {
-  font-family: Consolas, monaco, monospace;
+.md-show {
+	visibility: visible;
+}
+
+.md-content {
+  padding: 20px;
+  transform: scale(0.5);
+  opacity: 0;
+  transition: all 0.3s;
+}
+
+.md-show .md-content {
+  transform: scale(1);
+  opacity: 1;
+}
+
+.md-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  visibility: hidden;
+  opacity: 0;
+  background-color: rgba(0,0,0,0.5);
+  transition: all 0.3s;
+}
+
+.md-show.md-overlay {
+	opacity: 1;
+	visibility: visible;
+}
+
+
+@media (max-width: 415px) {
+  hstack[responsive] {
+    display: block;
+  }
+}
+
+h2[responsive] {
+  font-size: 1em;
+}
+
+@media (min-width: 415px) {
+  h2[responsive] {
+    font-size: 1.5em;
+  }
 }
