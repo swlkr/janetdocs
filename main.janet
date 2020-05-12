@@ -43,7 +43,7 @@
       [:meta {:name "viewport" :content "width=device-width, initial-scale=1"}]
       [:meta {:name "csrf-token" :content (authenticity-token request)}]
       (links {:href ["/_pylon.css" "/_water.css" "/app.css"] :data-turbolinks-track "reload"})
-      (scripts {:src ["/_app.js" "/alpine.js"] :defer "" :data-turbolinks-track "reload"})]
+      (scripts {:src ["/turbolinks.js" "/_app.js" "/alpine.js"] :defer "" :data-turbolinks-track "reload"})]
      [:body
       [:vstack {:spacing "xl"}
        (menu request)
@@ -80,7 +80,7 @@
         [:vstack {:spacing "xl"}
          (foreach [d filtered-docs]
            [:vstack {:spacing "xs"}
-            [:a {:href (url-for :symbol {:name (d :binding)})}
+            [:a {:href (string "/" (d :binding))}
              (d :binding)]
             [:pre
              [:code
@@ -88,9 +88,8 @@
 
 
 (defn symbol [request]
-  (let [params (request :params)
-        name (params :name)
-        d (first (filter |(= name ($ :binding)) alldocs))]
+  (when-let [name (request :wildcard)
+             d (first (filter |(= name ($ :binding)) alldocs))]
     [:vstack
      [:h1 (d :binding)]
      [:pre
@@ -101,7 +100,7 @@
 (defroutes routes
   [:get "/" home]
   [:post "/search" search]
-  [:get "/docs/:name" symbol])
+  [:get "/*" symbol])
 
 
 (defn not-found-fn [request]
