@@ -1,3 +1,5 @@
+(import dotenv)
+(dotenv/load)
 (use joy)
 
 
@@ -113,6 +115,6 @@
 (defn main [& args]
   (def port (or (get args 1) (env :port) "8000"))
 
-  (db/connect (env :database-url))
+  (db/connect)
   (server app port) # stops listening on SIGINT
   (db/disconnect))
