@@ -1,20 +1,4 @@
-(def allbindings (all-bindings))
-
 (use joy)
-
-
-(defn getalldocs []
-  (def output @[])
-
-  (loop [b :in allbindings]
-    (def buf @"")
-    (with-dyns [:out buf]
-      (doc* b)
-      (array/push output {:binding (string b) :docstring (string buf)})))
-
-  output)
-
-(def alldocs (getalldocs))
 
 
 (defn blank? [val]
@@ -73,15 +57,15 @@
 (defn search [request]
   (let [body (request :body)
         token (body :token)
-        filtered-docs (filter |(string/has-prefix? token ($ :binding)) alldocs)]
+        filtered-docs (db/query (slurp "db/sql/search.sql") [(string token "%")])]
     (if (blank? token)
       (text/html)
       (text/html
         [:vstack {:spacing "xl"}
          (foreach [d filtered-docs]
            [:vstack {:spacing "xs"}
-            [:a {:href (string "/" (d :binding))}
-             (d :binding)]
+            [:a {:href (string "/" (d :name))}
+             (d :name)]
             [:pre
              [:code
                (d :docstring)]]])]))))
@@ -89,9 +73,10 @@
 
 (defn symbol [request]
   (when-let [name (request :wildcard)
-             d (first (filter |(= name ($ :binding)) alldocs))]
+             d (first (db/query (slurp "db/sql/search.sql") [name]))]
     [:vstack
-     [:h1 (d :binding)]
+     [:h1 (d :name)]
+     [:strong (d :package)]
      [:pre
       [:code
        (d :docstring)]]]))
