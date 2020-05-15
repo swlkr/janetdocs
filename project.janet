@@ -1,7 +1,8 @@
 (declare-project
   :name "janetdocs"
   :description ""
-  :dependencies ["https://github.com/joy-framework/joy"]
+  :dependencies ["https://github.com/joy-framework/joy"
+                 "https://github.com/joy-framework/http"]
   :author ""
   :license ""
   :url ""
@@ -20,4 +21,4 @@
   (do
     (os/shell "pkill -xf 'janet main.janet'")
     (os/shell "janet main.janet &")
-    (os/shell "fswatch -o src | xargs -n1 -I{} ./watch")))
+    (os/shell "fswatch -o . | xargs -n1 -I{} ./watch")))
