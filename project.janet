@@ -2,7 +2,8 @@
   :name "janetdocs"
   :description ""
   :dependencies ["https://github.com/joy-framework/joy"
-                 "https://github.com/joy-framework/http"]
+                 "https://github.com/joy-framework/http"
+                 "https://github.com/joy-framework/moondown"]
   :author ""
   :license ""
   :url ""
