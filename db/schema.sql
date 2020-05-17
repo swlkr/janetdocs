@@ -5,7 +5,7 @@ CREATE TABLE account (
   access_token text not null,
   created_at integer not null default(strftime('%s', 'now')),
   updated_at integer
-)
+, login text not null default '')
 CREATE TABLE package (
   id integer primary key,
   name text not null,
@@ -17,7 +17,7 @@ CREATE TABLE binding (
   id integer primary key,
   name text not null,
   docstring text,
-  package_id integer not null references package(id),
+  package_id integer references package(id),
   created_at integer not null default(strftime('%s', 'now')),
   updated_at integer
 )

@@ -14,15 +14,15 @@
 
 (db/connect)
 
-(var package (db/find-by :package :where {:name "core"}))
-(unless package
- (set package (db/insert :package {:name "core" :url "https://github.com/janet-lang/janet/blob/master/src/boot/boot.janet"})))
+# (var package (db/find-by :package :where {:name "core"}))
+# (unless package
+#  (set package (db/insert :package {:name "core" :url "https://github.com/janet-lang/janet/blob/master/src/boot/boot.janet"})))
 
 (loop [d :in alldocs]
-  (def b (db/find-by :binding :where {:name (d :name) :package-id (package :id)}))
+  (def b (db/find-by :binding :where {:name (d :name)})) # :package-id (package :id)}))
   (unless b
     (db/insert :binding {:name (d :name)
-                         :docstring (d :docstring)
-                         :package-id (package :id)})))
+                         :docstring (d :docstring)})))
+                         #:package-id (package :id)})))
 
 (db/disconnect)
