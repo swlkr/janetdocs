@@ -126,6 +126,9 @@
   [:get "/bindings/:binding-id/examples/form" :examples/form]
   [:get "/bindings/:binding-id/examples/new" :examples/new]
   [:post "/bindings/:binding-id/examples" :examples/create]
+  [:get "/examples/:id/edit" :examples/edit]
+  [:patch "/examples/:id" :examples/patch]
+  [:delete "/examples/:id" :examples/destroy]
   [:get "/*" :bindings/show])
 
 

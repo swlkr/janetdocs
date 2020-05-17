@@ -59,25 +59,32 @@
 
 
 (defn form [request]
-  (def params (request :params))
+  (def {:params params :example example} request)
 
-  (text/html
-    (form-with request (action-for :examples/create {:binding-id (params :binding-id)})
-      [:vstack {:spacing "m"}
-       [:vstack
-        [:label {:for "body"} "New example"]
-        [:textarea {:rows "10" :name "body" :autofocus ""}]]
+  (def html (form-for [request (if example :examples/patch :examples/create) {:id (get example :id) :binding-id (params :binding-id)}]
+              [:vstack {:spacing "m"}
+               [:vstack
+                [:label {:for "body"} (if example
+                                        "Edit example"
+                                        "New example")]
+                [:textarea {:rows "10" :name "body" :autofocus ""}
+                 (get example :body)]]
 
-       [:vstack
-        [:button {:type "submit"}
-         "Add example"]]])))
+               [:vstack
+                [:button {:type "submit"}
+                 "Save example"]]]))
+
+  (if (xhr? request)
+    (text/html html)
+    html))
 
 
 (defn new [request]
-  (let [binding (db/fetch [:binding (get-in request [:params :binding-id])])
-        package (db/find :package (binding :id))
-        binding (merge binding {:package package})
-        request (merge request {:binding binding})]
+  (when-let [account (current-account request)
+             binding (db/fetch [:binding (get-in request [:params :binding-id])])
+             package (db/find :package (binding :id))
+             binding (merge binding {:package package})
+             request (merge request {:binding binding})]
 
     [:vstack
      (binding-header binding)
@@ -96,5 +103,36 @@
 
 
     (def binding (db/find :binding (params :binding-id)))
+
+    (redirect (binding-show-url binding))))
+
+
+(defn edit [request]
+  (when-let [account (current-account request)
+             example (db/fetch [:account account :example (scan-number (get-in request [:params :id] 0))])]
+
+    (form (merge request {:example example}))))
+
+
+(defn patch [req]
+  (when-let [account (current-account req)
+             example (db/fetch [:account account :example (get-in req [:params :id] 0)])
+             body (req :body)
+             binding (db/find :binding (example :binding-id))]
+
+    (if (blank? body)
+      (edit (merge req {:error {:body "Body can't be blank"}}))
+      (do
+        (db/update :example example {:body (body :body)})
+        (redirect (binding-show-url binding))))))
+
+
+(defn destroy [request]
+  (when-let [account (current-account request)
+             example (db/fetch [:account account :example (get-in request [:params :id])])]
+
+    (db/delete :example (example :id))
+
+    (def binding (db/find :binding (example :binding-id)))
 
     (redirect (binding-show-url binding))))
