@@ -15,12 +15,13 @@ function api(url, options) {
   if(options.method.toLowerCase() !== 'get') {
     options['headers']['x-csrf-token'] = document.querySelector('meta[name="csrf-token"]').content;
   }
+  options['headers']['x-requested-with'] = 'XMLHttpRequest'
 
   return fetch(url, options);
 }
 
 
-async function get(url, opts, contentType) {
+async function get(url, contentType) {
   var options = {
     method: 'get',
     headers: {
