@@ -20,30 +20,30 @@
                                  order by example.created_at desc`
                                 [(binding :id)])]
 
-    [:vstack {:x-data "{ newExample: false }" :spacing "m"}
+    [:vstack {:spacing "m"}
      (binding-header binding)
 
-     [:hstack
-      [:strong (string (length examples) (pluralize " examples" (length examples)))]
-      [:spacer]
-      (when (get-in request [:session :login])
-        [:span
-         [:a {:href "" :x-show "newExample" :@click.prevent "newExample = false"}
-          "Cancel"]
-         [:a {:x-show "!newExample"
-              :href (url-for :examples/new {:binding-id (binding :id)})
-              :@mouseenter.once (set-html {:url (url-for :examples/form {:binding-id (binding :id)})
-                                           :ref "example_form"})
-              :@click.prevent "newExample = true"}
-          "Add an example"]])]
+     [:vstack {:spacing "m" :x-data "{ newExample: false }"}
+      [:hstack
+       [:strong (string (length examples) (pluralize " examples" (length examples)))]
+       [:spacer]
+       (when (get-in request [:session :login])
+         [:span
+          [:a {:href "" :x-show "newExample" :@click.prevent "newExample = false"}
+           "Cancel"]
+          [:a {:x-show "!newExample"
+               :href (url-for :examples/new {:binding-id (binding :id)})
+               :@mouseenter.once (set-html {:url (url-for :examples/form {:binding-id (binding :id)})
+                                            :ref "form"})
+               :@click.prevent "newExample = true"}
+           "Add an example"]])]
 
-     [:vstack {:spacing "m"}
-      (foreach [ex examples]
-        [:vstack
-         [:pre
-          [:code
-            (raw (moondown/render (ex :body)))]]
-         [:strong (ex :login)]])
-
-      [:div {:x-show "newExample" :x-ref "example_form"}
-       "Loading..."]]]))
+      [:vstack {:spacing "m"}
+       [:div {:x-show "newExample" :x-ref "form"}
+        "Loading..."]
+       (foreach [ex examples]
+         [:vstack
+          [:pre
+           [:code
+             (raw (moondown/render (ex :body)))]]
+          [:strong (ex :login)]])]]]))
