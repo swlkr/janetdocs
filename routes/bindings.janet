@@ -42,8 +42,8 @@
        [:div {:x-show "newExample" :x-ref "form"}
         "Loading..."]
        (foreach [ex examples]
-         [:vstack
+         [:vstack {:spacing "xs"}
           [:pre
-           [:code
-             (raw (moondown/render (ex :body)))]]
+           [:code {:class "clojure"}
+            (raw (moondown/render (ex :body)))]]
           [:strong (ex :login)]])]]]))

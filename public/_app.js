@@ -1,3 +1,14 @@
+document.addEventListener('DOMContentLoaded', (event) => {
+  document.querySelectorAll('pre code').forEach((block) => {
+    hljs.highlightBlock(block);
+  });
+});
+document.addEventListener('turbolinks:load', function() {
+  document.querySelectorAll('pre code').forEach((block) => {
+    hljs.highlightBlock(block);
+  });
+});
+
 function api(url, options) {
   var options = options || {};
   options.headers = options.headers || {};
@@ -55,6 +66,12 @@ function searcher(url) {
       var html = await post(url, { token: this.token }, "text/html");
       this.loading = false;
       this.results = html;
+
+      setTimeout(function() {
+        document.querySelectorAll('pre > code').forEach(function(el) {
+          hljs.highlightBlock(el);
+        });
+      }, 0)
     }
   }
 }

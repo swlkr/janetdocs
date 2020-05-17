@@ -38,8 +38,11 @@
       [:link {:rel "icon" :type "image/png" :sizes "32x32" :href "/favicon-32x32.png"}]
       [:link {:rel "icon" :type "image/png" :sizes "16x16" :href "/favicon-16x16.png"}]
       [:link {:rel "manifest" :href "/site.webmanifest"}]
+      [:link {:rel "stylesheet" :href "/atom-one-light.css" :media "(prefers-color-scheme: no-preference), (prefers-color-scheme: light)"}]
+      [:link {:rel "stylesheet" :href "/atom-one-dark.css" :media "(prefers-color-scheme: dark)"}]
       (link {:href ["/_pylon.css" "/_water.css" "/app.css"] :data-turbolinks-track "reload"})
-      (script {:src ["/turbolinks.js" "/_app.js" "/alpine.js"] :defer "" :data-turbolinks-track "reload"})]
+      (script {:src ["/highlight.pack.js" "/turbolinks.js" "/_app.js" "/alpine.js"] :defer "" :data-turbolinks-track "reload"})]
+
      [:body
       [:vstack {:spacing "xl"}
        (menu request)
@@ -57,14 +60,14 @@
              :autofocus ""
              :style "width: 100%"
              :x-model "token"
-             :x-on:keyup "search()"}]
+             :x-on:keyup.prevent "search()"}]
     [:div {:x-html "results" :style "width: 100%"}]])
 
 
 (defn searches [request]
   (let [body (request :body)
         token (body :token)
-        bindings(db/query (slurp "db/sql/search.sql") [(string token "%")])]
+        bindings (db/query (slurp "db/sql/search.sql") [(string token "%")])]
     (if (blank? token)
       (text/html)
       (text/html
@@ -74,7 +77,7 @@
             [:a {:href (binding-show-url binding)}
              (binding :name)]
             [:pre
-             [:code
+             [:code {:class "clojure"}
                (binding :docstring)]]])]))))
 
 

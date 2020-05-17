@@ -36,7 +36,6 @@ html, body {
   --highlight: #ffff00;
 }
 
-/*
 @media (prefers-color-scheme: dark) {
   :root {
     --background-body: #202b38;
@@ -50,8 +49,8 @@ html, body {
     --text-muted: #717880;
     --text-cta: #fff;
 
-    --links: #41adff;
-    --focus: #0096bfab;
+    --links: hsla(292, 88%, 82%, 1.0);
+    --focus: hsla(292, 88%, 82%, 1.0);
     --border: #1a242f;
     --code: #ffbe85;
 
@@ -68,7 +67,6 @@ html, body {
     --highlight: #efdb43;
   }
 }
-*/
 
 body {
   font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
@@ -459,7 +457,7 @@ a:hover {
   text-decoration: underline;
 }
 
-code, samp, time {
+samp, time {
   background:  var(--background);
   color: var(--code);
   padding: 2.5px 5px;
@@ -472,9 +470,15 @@ pre {
 }
 
 pre > code {
+  padding-top: 10px !important;
   padding: 10px;
   display: block;
   overflow-x: auto;
+}
+
+pre > code p {
+  line-height: 0;
+  margin-bottom: 0;
 }
 
 var {

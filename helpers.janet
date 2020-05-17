@@ -17,12 +17,12 @@
    [:h1 (binding :name)]
    [:strong (get-in binding [:package :name] (binding :package))]
    [:pre
-    [:code
+    [:code {:class "clojure"}
      (binding :docstring)]]])
 
 
 (defn binding-show-url [binding]
-  (def package (db/find :package (binding :package-id)))
+  (def package (db/find :package (or (binding :package-id) 0)))
 
   (if package
     (string "/" (package :name) "/" (binding :name))
