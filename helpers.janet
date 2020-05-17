@@ -27,3 +27,9 @@
   (if package
     (string "/" (package :name) "/" (binding :name))
     (string "/" (binding :name))))
+
+
+(defn pluralize [str n]
+  (if (one? n)
+    (string/trimr str "s")
+    str))

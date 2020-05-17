@@ -20,11 +20,11 @@
                                  order by example.created_at desc`
                                 [(binding :id)])]
 
-    [:vstack {:x-data "{ newExample: false }" :spacing "l"}
+    [:vstack {:x-data "{ newExample: false }" :spacing "m"}
      (binding-header binding)
 
      [:hstack
-      [:strong (string (length examples) " examples")]
+      [:strong (string (length examples) (pluralize " examples" (length examples)))]
       [:spacer]
       (when (get-in request [:session :login])
         [:span
@@ -37,7 +37,7 @@
               :@click.prevent "newExample = true"}
           "Add an example"]])]
 
-     [:vstack {:spacing "l"}
+     [:vstack {:spacing "m"}
       (foreach [ex examples]
         [:vstack
          [:pre

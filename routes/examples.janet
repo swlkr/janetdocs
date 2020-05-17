@@ -17,7 +17,6 @@
          "Add example"]]])))
 
 
-
 (defn new [request]
   (let [binding (db/fetch [:binding (get-in request [:params :binding-id])])
         package (db/find :package (binding :id))
