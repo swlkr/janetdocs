@@ -68,7 +68,9 @@
                                         "Edit example"
                                         "New example")]
                 [:textarea {:rows "10" :name "body" :autofocus ""}
-                 (get example :body)]]
+                 (get example :body)]
+                [:div {:style "color: red"}
+                 (get-in request [:errors :body])]]
 
                [:vstack
                 [:button {:type "submit"}
@@ -81,14 +83,18 @@
 
 (defn new [request]
   (when-let [account (current-account request)
-             binding (db/fetch [:binding (get-in request [:params :binding-id])])
-             package (db/find :package (binding :id))
-             binding (merge binding {:package package})
-             request (merge request {:binding binding})]
+             binding (db/fetch [:binding (get-in request [:params :binding-id])])]
 
-    [:vstack
-     (binding-header binding)
-     (raw (get (form request) :body))]))
+    (let [package (db/find :package (or (binding :package-id) 0))
+          binding (merge binding {:package package})
+          request (merge request {:binding binding})]
+
+      [:vstack
+       (binding-header binding)
+       (let [result (form request)]
+         (if (dictionary? result)
+           (raw (get result :body))
+           result))])))
 
 
 (defn create [request]
@@ -97,14 +103,18 @@
 
     (def {:body body :params params} request)
 
-    (db/insert :example {:account-id (account :id)
-                         :binding-id (params :binding-id)
-                         :body (body :body)})
+    (if (blank? (body :body))
+      (new (merge request {:errors {:body "Body can't be blank"}}))
+
+      (do
+        (db/insert :example {:account-id (account :id)
+                             :binding-id (params :binding-id)
+                             :body (body :body)})
 
 
-    (def binding (db/find :binding (params :binding-id)))
+        (def binding (db/find :binding (params :binding-id)))
 
-    (redirect (binding-show-url binding))))
+        (redirect (binding-show-url binding))))))
 
 
 (defn edit [request]
