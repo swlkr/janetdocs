@@ -12,7 +12,7 @@
                            from example
                            join account on account.id = example.account_id
                            join binding on binding.id = example.binding_id
-                           order by example.created_at desc`))
+                           order by example.created_at desc limit 30`))
 
   [:vstack {:align-x "center" :stretch "" :spacing "l"
             :x-data (string/format "searcher('%s')" (url-for :home/searches))}
