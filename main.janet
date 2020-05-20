@@ -27,5 +27,5 @@
   (def port (get args 1 "9001"))
 
   (db/connect)
-  (server app 9001) # stops listening on SIGINT
+  (server app port) # stops listening on SIGINT
   (db/disconnect))
