@@ -97,8 +97,8 @@
       [:link {:rel "icon" :type "image/png" :sizes "32x32" :href "/favicon-32x32.png"}]
       [:link {:rel "icon" :type "image/png" :sizes "16x16" :href "/favicon-16x16.png"}]
       [:link {:rel "manifest" :href "/site.webmanifest"}]
-      [:link {:rel "stylesheet" :href "/atom-one-light.css" :media "(prefers-color-scheme: no-preference), (prefers-color-scheme: light)"}]
-      [:link {:rel "stylesheet" :href "/atom-one-dark.css" :media "(prefers-color-scheme: dark)"}]
+      [:link {:rel "stylesheet" :href "/css/atom-one-light.css" :media "(prefers-color-scheme: no-preference), (prefers-color-scheme: light)"}]
+      [:link {:rel "stylesheet" :href "/css/atom-one-dark.css" :media "(prefers-color-scheme: dark)"}]
       (link {:href ["/_pylon.css" "/_water.css" "/app.css"] :data-turbolinks-track "reload"})
       [:script {:src "/js/_turbolinks.min.js" :defer "" :data-turbolinks-track "reload"}]
       (script {:src ["/_highlight.pack.js" "/_app.js" "/alpine.min.js"] :defer "" :data-turbolinks-track "reload"})]
