@@ -7,6 +7,7 @@
 
 (defroutes routes
   [:get "/" :home/index]
+  [:delete "/sessions" :sessions/destroy]
   [:get "/github-auth" :home/github-auth]
   [:post "/searches" :home/searches]
   [:get "/bindings/:binding-id/examples/form" :examples/form]

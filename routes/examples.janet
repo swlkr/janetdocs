@@ -20,7 +20,7 @@
    [:hstack
     [:strong (string (length examples) (pluralize " examples" (length examples)))]
     [:spacer]
-    (when (get session :login)
+    (if (get session :login)
       [:span
        [:a {:href "" :x-show "newExample" :@click.prevent "newExample = false"}
         "Cancel"]
@@ -29,7 +29,11 @@
             :@mouseenter.once (set-html {:url (url-for :examples/form {:binding-id (binding :id)})
                                          :ref "form"})
             :@click.prevent "newExample = true"}
-        "Add an example"]])]
+        "Add an example"]]
+      [:span
+       [:a {:href (string/format "https://github.com/login/oauth/authorize?client_id=%s"
+                                 (env :github-client-id))}
+        "Sign in to add an examplee"]])]
 
    [:vstack {:spacing "m"}
     [:div {:x-show "newExample" :x-ref "form"}

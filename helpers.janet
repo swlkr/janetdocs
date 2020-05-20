@@ -72,7 +72,12 @@
     [:a {:href (url-for :home/index)}
      "JanetDocs"]
     [:spacer]
-    (unless (session :login)
+    (if (get session :login)
+      [:hstack {:spacing "m"}
+       (form-with request (action-for :sessions/destroy)
+         [:input {:type "hidden" :name "_method" :value "delete"}]
+         [:input {:type "submit" :value "Sign out"}])]
+
       [:hstack {:spacing "m"}
        [:a {:href (string/format "https://github.com/login/oauth/authorize?client_id=%s"
                                  (env :github-client-id))}
