@@ -17,7 +17,8 @@
       [:hstack {:spacing "m" :align-x "right"}
        [:a {:href (string "/" (ex :binding))}
         (ex :binding)]
-       [:strong (string "by " (ex :login))]]])])
+       [:a {:href (string "https://github.com/" (ex :login))}
+        (ex :login)]]])])
 
 
 (defn index [request]
@@ -58,7 +59,8 @@
         [:code {:class "clojure"}
          (raw (moondown/render (ex :body)))]]
        [:hstack
-        [:strong (ex :login)]
+        [:a {:href (string "https://github.com/" (ex :login))}
+         (ex :login)]
         [:spacer]
         (when (= (get session :login)
                  (ex :login))
