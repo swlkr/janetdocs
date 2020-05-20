@@ -3,6 +3,12 @@
 html, body {
   height: 100%;
 }
+*::selection,
+*::-moz-selection,
+*::-webkit-selection {
+    background: rgba(212, 212, 212, 0.7);
+    color: #111;
+}
 
 .md-modal {
   position: fixed;
