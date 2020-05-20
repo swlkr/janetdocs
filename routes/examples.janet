@@ -7,6 +7,19 @@
   (string/format `get('%s', 'text/html').then(html => $refs.%s.innerHTML = html)` url ref))
 
 
+(defn list [examples]
+  [:vstack {:spacing "xl"}
+   (foreach [ex examples]
+     [:vstack {:spacing "xs"}
+      [:pre
+       [:code {:class "clojure"}
+        (raw (moondown/render (ex :body)))]]
+      [:hstack {:spacing "m" :align-x "right"}
+       [:a {:href (string "/" (ex :binding))}
+        (ex :binding)]
+       [:strong (string "by " (ex :login))]]])])
+
+
 (defn index [request]
   (def {:binding binding :session session} request)
   (def examples (db/query `select example.*, account.login as login

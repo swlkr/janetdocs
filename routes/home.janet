@@ -4,9 +4,16 @@
 (import cipher)
 (import json)
 (import moondown)
+(import ./examples)
 
 
 (defn index [request]
+  (def examples (db/query `select example.*, account.login as login, binding.name as binding
+                           from example
+                           join account on account.id = example.account_id
+                           join binding on binding.id = example.binding_id
+                           order by example.created_at desc`))
+
   [:vstack {:align-x "center" :stretch "" :spacing "l"
             :x-data (string/format "searcher('%s')" (url-for :home/searches))}
     [:h1
@@ -19,7 +26,11 @@
              :x-on:keyup.debounce "search()"
              :x-on:keydown.enter.prevent "go()"}]
     [:div {:x-html "results" :style "width: 100%"}
-     "Loading..."]])
+     "Loading..."]
+
+    [:vstack {:x-show "!token || token === ''"}
+     [:h3 "Recent examples"]
+     (examples/list examples)]])
 
 
 (defn searches [request]
