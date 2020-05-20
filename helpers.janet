@@ -95,7 +95,7 @@
       [:link {:rel "stylesheet" :href "/atom-one-light.css" :media "(prefers-color-scheme: no-preference), (prefers-color-scheme: light)"}]
       [:link {:rel "stylesheet" :href "/atom-one-dark.css" :media "(prefers-color-scheme: dark)"}]
       (link {:href ["/_pylon.css" "/_water.css" "/app.css"] :data-turbolinks-track "reload"})
-      (script {:src ["/highlight.pack.js" "/turbolinks.min.js" "/_app.js" "/alpine.min.js"] :defer "" :data-turbolinks-track "reload"})]
+      (script {:src ["/_highlight.pack.js" "/_turbolinks.min.js" "/_app.js" "/alpine.min.js"] :defer "" :data-turbolinks-track "reload"})]
 
      [:body
       [:vstack {:spacing "xl"}

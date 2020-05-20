@@ -58,14 +58,11 @@ async function post(url, body, contentType) {
 
 function searcher(url) {
   return {
-    loading: false,
     token: '',
     results: '',
 
     search: async function() {
-      this.loading = true;
       var html = await post(url, { token: this.token }, "text/html");
-      this.loading = false;
       this.results = html;
 
       setTimeout(function() {
