@@ -70,6 +70,10 @@ function searcher(url) {
           hljs.highlightBlock(el);
         });
       }, 0)
+    },
+
+    go: function() {
+      Turbolinks.visit(document.querySelectorAll('.binding')[0].getAttribute('href'))
     }
   }
 }

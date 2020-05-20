@@ -16,8 +16,10 @@
              :autofocus ""
              :style "width: 100%"
              :x-model "token"
-             :x-on:keyup.prevent "search()"}]
-    [:div {:x-html "results" :style "width: 100%"}]])
+             :x-on:keyup.debounce "search()"
+             :x-on:keydown.enter.prevent "go()"}]
+    [:div {:x-html "results" :style "width: 100%"}
+     "Loading..."]])
 
 
 (defn searches [request]
@@ -25,12 +27,12 @@
         token (body :token)
         bindings (db/query (slurp "db/sql/search.sql") [(string token "%")])]
     (if (blank? token)
-      (text/html)
+      (text/html [:div])
       (text/html
         [:vstack {:spacing "xl"}
          (foreach [binding bindings]
            [:vstack {:spacing "xs"}
-            [:a {:href (binding-show-url binding)}
+            [:a {:class "binding" :href (binding-show-url binding)}
              (binding :name)]
             [:pre
              [:code {:class "clojure"}
