@@ -26,9 +26,6 @@ html, body {
   --animation-duration: 0.1s;
   --button-hover: #dddddd;
 
-  --scrollbar-thumb: rgb(213, 213, 213);
-  --scrollbar-thumb-hover: rgb(196, 196, 196);
-
   --form-placeholder: #949494;
   --form-text: #333333;
 
@@ -56,9 +53,6 @@ html, body {
 
     --animation-duration: 0.1s;
     --button-hover: #324759;
-
-    --scrollbar-thumb: var(--button-hover);
-    --scrollbar-thumb-hover: rgb(65, 92, 115);
 
     --form-placeholder: #a9a9a9;
     --form-text: #ffffff;
@@ -526,25 +520,6 @@ tfoot {
 
 tbody tr:nth-child(even) {
   background-color: var(--background-alt);
-}
-
-::-webkit-scrollbar {
-  height: 10px;
-  width: 10px;
-}
-
-::-webkit-scrollbar-track {
-  background: var(--background);
-  border-radius: 6px;
-}
-
-::-webkit-scrollbar-thumb {
-  background: var(--scrollbar-thumb);
-  border-radius: 6px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: var(--scrollbar-thumb-hover);
 }
 
 ::-moz-selection {
