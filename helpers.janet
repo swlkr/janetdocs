@@ -13,7 +13,7 @@
 
 
 (defn binding-header [binding]
-  [:vstack
+  [:vstack {:spacing "xs"}
    [:h1 (binding :name)]
    [:strong (get-in binding [:package :name] (binding :package))]
    [:pre

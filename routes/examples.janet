@@ -1,10 +1,13 @@
 (import joy :prefix "")
 (import ../helpers :prefix "")
-(import moondown)
 
 
-(defn set-html [{:url url :ref ref}]
-  (string/format `get('%s', 'text/html').then(html => $refs.%s.innerHTML = html)` url ref))
+(defn set-html [{:method method :input input :url url :ref ref}]
+  (def method (or method "get"))
+  (def f (if (= "post" method)
+           (string/format "post('%s', %s, 'text/html')" url input)
+           (string/format "get('%s', 'text/html')" url)))
+  (string/format `%s.then(html => $refs.%s.innerHTML = html);` f ref))
 
 
 (defn list [examples]
@@ -13,7 +16,7 @@
      [:vstack {:spacing "xs"}
       [:pre
        [:code {:class "clojure"}
-        (raw (moondown/render (ex :body)))]]
+        (ex :body)]]
       [:hstack {:spacing "m" :align-x "right"}
        [:a {:href (string "/" (ex :binding))}
         (ex :binding)]
@@ -30,70 +33,82 @@
                            order by example.created_at desc`
                           [(binding :id)]))
 
-  [:vstack {:spacing "m" :x-data "{ newExample: false }"}
+  [:vstack {:spacing "xl" :x-data "{ editing: false, add: true, adding: false, examples: {} }" :@cancel-new "editing = false" :@cancel-edit "add = true" :@edit-example "add = false"}
    [:hstack
     [:strong (string (length examples) (pluralize " examples" (length examples)))]
     [:spacer]
     (if (get session :login)
       [:span
-       [:a {:href "" :x-show "newExample" :@click.prevent "newExample = false"}
-        "Cancel"]
-       [:a {:x-show "!newExample"
+       [:a {:x-show "add && !editing"
             :href (url-for :examples/new {:binding-id (binding :id)})
             :@mouseenter.once (set-html {:url (url-for :examples/form {:binding-id (binding :id)})
                                          :ref "form"})
-            :@click.prevent "newExample = true"}
+            :@click.prevent "editing = true; $dispatch('new-example')"}
         "Add an example"]]
       [:span
        [:a {:href (string/format "https://github.com/login/oauth/authorize?client_id=%s"
                                  (env :github-client-id))}
-        "Sign in to add an examplee"]])]
+        "Sign in to add an example"]])]
 
    [:vstack {:spacing "m"}
-    [:div {:x-show "newExample" :x-ref "form"}
+    [:div {:x-show "editing" :x-ref "form"}
      "Loading..."]
-    (foreach [ex examples]
-      [:vstack {:spacing "xs" :x-data "{ editing: false }"}
-       [:div {:x-show "editing" :x-ref "editing"}]
-       [:pre {:x-show "!editing"}
-        [:code {:class "clojure"}
-         (raw (moondown/render (ex :body)))]]
-       [:hstack
-        [:a {:href (string "https://github.com/" (ex :login))}
-         (ex :login)]
-        [:spacer]
-        (when (= (get session :login)
-                 (ex :login))
-          [:hstack {:spacing "l"}
-           [:a {:x-show "!editing"
-                :href (url-for :examples/edit ex)
-                :@mouseenter.once (set-html {:url (url-for :examples/edit ex)
-                                             :ref "editing"})
-                :@click.prevent "editing = true"}
-            "Edit"]
-           [:a {:x-show "editing" :@click.prevent "editing = false" :href "#"}
-            "Cancel"]
+    [:div {:x-show "!editing"}
+     (foreach [ex examples]
+       [:vstack {:spacing "xs" :x-data "{ editing: false }" :@cancel-edit "editing = false"}
+        [:div {:x-show "editing" :x-ref "editor"}]
+        [:pre {:x-show "!editing"}
+         [:code {:class "clojure"}
+          (ex :body)]]
+        [:hstack
+         [:a {:href (string "https://github.com/" (ex :login)) :x-show "!editing"}
+          (ex :login)]
+         [:spacer]
+         (when (= (get session :login)
+                  (ex :login))
+           [:hstack {:spacing "l"}
+            [:a {:x-show "!editing"
+                 :href (url-for :examples/edit ex)
+                 :@mouseenter.once (set-html {:url (url-for :examples/edit ex)
+                                              :ref "editor"})
+                 :@click.prevent "editing = true; $dispatch('edit-example')"}
+             "Edit"]
 
-           (delete-button request (url-for :examples/destroy ex))])]])]])
+            [:span {:x-show "!editing"}
+             (delete-button request (url-for :examples/destroy ex))]])]])]]])
 
 
 (defn form [request]
   (def {:params params :example example} request)
 
   (def html (form-for [request (if example :examples/patch :examples/create) {:id (get example :id) :binding-id (params :binding-id)}]
-              [:vstack {:spacing "m"}
-               [:vstack
-                [:label {:for "body"} (if example
-                                        "Edit example"
-                                        "New example")]
-                [:textarea {:rows "10" :name "body" :autofocus ""}
+              [:vstack {:spacing "m" :x-data "{ preview: false, body: '' }" :x-init "() => { body = $refs.initialBody.value }"}
+               [:textarea {:style "display: none" :x-ref "initialBody"}
                  (get example :body)]
-                [:div {:style "color: red"}
-                 (get-in request [:errors :body])]]
-
-               [:vstack
-                [:button {:type "submit"}
-                 "Save example"]]]))
+               [:vstack {:spacing "xs"}
+                [:hstack {:spacing "m"}
+                 [:a {:href "#" :x-bind:style "!preview ? 'text-decoration: underline' : ''"
+                      :@click.prevent "preview = false"}
+                  "Edit"]
+                 [:a {:href "#"
+                      :x-bind:style "preview ? 'text-decoration: underline' : ''"
+                      :@click.prevent "preview = true; setTimeout(function() { highlight() }, 0)"}
+                  "Preview"]
+                 [:spacer]
+                 [:a {:href "" :@click.prevent (string
+                                                 "preview = false; "
+                                                 (if (get example :id) "$dispatch('cancel-edit')" "$dispatch('cancel-new')"))}
+                  "Cancel"]]
+                [:pre
+                 [:code {:x-show "preview" :x-text "body" :class "clojure"}]]
+                [:textarea {:x-show "!preview" :x-model "body" :rows "10" :name "body" :autofocus ""}
+                 (get example :body)]
+                [:hstack
+                 [:div {:style "color: red"}
+                  (get-in request [:errors :body])]]
+                [:vstack
+                 [:button {:type "submit"}
+                  "Save example"]]]]))
 
   (if (xhr? request)
     (text/html html)
