@@ -18,7 +18,7 @@
             :x-data (string/format "searcher('%s')" (url-for :home/searches))}
     [:h1
      [:span "JanetDocs is a community documentation site for the "]
-     [:a {:href "https://janet-lang.org"} "janet programming language"]]
+     [:a {:href "https://janet-lang.org"} "Janet programming language"]]
     [:input {:type "text" :name "token" :placeholder "search docs"
              :autofocus ""
              :style "width: 100%"
