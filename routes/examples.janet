@@ -53,7 +53,7 @@
    [:vstack {:spacing "m"}
     [:div {:x-show "editing" :x-ref "form"}
      "Loading..."]
-    [:div {:x-show "!editing"}
+    [:vstack {:x-show "!editing" :spacing "xl"}
      (foreach [ex examples]
        [:vstack {:spacing "xs" :x-data "{ editing: false }" :@cancel-edit "editing = false"}
         [:div {:x-show "editing" :x-ref "editor"}]
