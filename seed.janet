@@ -2,27 +2,27 @@
 
 (import dotenv)
 (dotenv/load)
-(use joy)
+
+(import joy)
 
 (def alldocs @[])
 
 (loop [b :in allbindings]
-  (def buf @"")
-  (with-dyns [:out buf]
-    (doc* b)
-    (array/push alldocs {:name (string b) :docstring (string buf)})))
+  (when (not= "allbindings" (string b))
+    (do
+      (def buf @"")
+      (with-dyns [:out buf]
+        (doc* b)
+        (array/push alldocs {:name (string b) :docstring (string buf)})))))
 
-(db/connect)
-
-# (var package (db/find-by :package :where {:name "core"}))
-# (unless package
-#  (set package (db/insert :package {:name "core" :url "https://github.com/janet-lang/janet/blob/master/src/boot/boot.janet"})))
+(joy/db/connect)
 
 (loop [d :in alldocs]
-  (def b (db/find-by :binding :where {:name (d :name)})) # :package-id (package :id)}))
-  (unless b
-    (db/insert :binding {:name (d :name)
-                         :docstring (d :docstring)})))
-                         #:package-id (package :id)})))
+  (def b (joy/db/find-by :binding :where {:name (d :name)}))
+  (if b
+    (joy/db/update :binding b {:docstring (d :docstring) # fix shadowed bindings and ? url problem
+                               :name (d :name)})
+    (joy/db/insert :binding {:name (d :name)
+                             :docstring (d :docstring)})))
 
-(db/disconnect)
+(joy/db/disconnect)
