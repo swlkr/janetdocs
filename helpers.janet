@@ -24,9 +24,11 @@
 (defn binding-show-url [binding]
   (def package (db/find :package (or (binding :package-id) 0)))
 
+  (def name (string/replace "?" "_q" (binding :name)))
+
   (if package
-    (string "/" (package :name) "/" (binding :name))
-    (string "/" (binding :name))))
+    (string "/" (package :name) "/" name)
+    (string "/" name)))
 
 
 (defn pluralize [str n]
