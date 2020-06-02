@@ -1,4 +1,5 @@
 (import joy :prefix "")
+(import uri)
 
 
 (defmacro foreach [binding & body]
@@ -29,7 +30,7 @@
 
   (if package
     (string "/" (package :name) "/" name url)
-    (string "/" name url)))
+    (string "/" (uri/escape name) url)))
 
 
 (defn singularize [str n]
