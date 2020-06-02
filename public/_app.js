@@ -2,6 +2,17 @@ document.addEventListener('turbolinks:load', function() {
   document.querySelectorAll('pre code').forEach((block) => {
     hljs.highlightBlock(block);
   });
+
+  setTimeout(function() {
+    var params = new URLSearchParams(window.location.search)
+    if(params.get('new') === '') {
+      const ev = new Event('mouseenter');
+      document.getElementById('add-example').dispatchEvent(ev);
+
+      const ev1 = new Event('click');
+      document.getElementById('add-example').dispatchEvent(ev1);
+    }
+  }, 10);
 });
 
 function highlight() {

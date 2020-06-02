@@ -40,7 +40,8 @@
     (if (get session :login)
       [:span
        [:a {:x-show "add && !editing"
-            :href (url-for :examples/new {:binding-id (binding :id)})
+            :id "add-example"
+            :style "cursor: pointer"
             :@mouseenter.once (set-html {:url (url-for :examples/form {:binding-id (binding :id)})
                                          :ref "form"})
             :@click.prevent "editing = true; $dispatch('new-example')"}
@@ -123,7 +124,7 @@
           binding (merge binding {:package package})
           request (merge request {:binding binding})]
 
-      [:vstack
+      [:vstack {:spacing "xl"}
        (binding-header binding)
        (let [result (form request)]
          (if (dictionary? result)
