@@ -46,7 +46,14 @@
              (binding :name)]
             [:pre
              [:code {:class "clojure"}
-               (binding :docstring)]]])]))))
+               (binding :docstring)]]
+            [:hstack
+             [:strong (string (binding :examples) " " (singularize "examples" (binding :examples)))]
+             [:spacer]
+             [:a {:href (binding-show-url binding "?new=")}
+              (if (zero? (binding :examples))
+                "Add the first example"
+                "Add a new example")]]])]))))
 
 
 (defn github-auth [request]

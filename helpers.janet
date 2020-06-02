@@ -21,17 +21,18 @@
      (binding :docstring)]]])
 
 
-(defn binding-show-url [binding]
+(defn binding-show-url [binding &opt url]
+  (default url "")
   (def package (db/find :package (or (binding :package-id) 0)))
 
   (def name (string/replace "?" "_q" (binding :name)))
 
   (if package
-    (string "/" (package :name) "/" name)
-    (string "/" name)))
+    (string "/" (package :name) "/" name url)
+    (string "/" name url)))
 
 
-(defn pluralize [str n]
+(defn singularize [str n]
   (if (one? n)
     (string/trimr str "s")
     str))

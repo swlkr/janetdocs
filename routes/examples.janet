@@ -35,7 +35,7 @@
 
   [:vstack {:spacing "xl" :x-data "{ editing: false, add: true, adding: false, examples: {} }" :@cancel-new "editing = false" :@cancel-edit "add = true" :@edit-example "add = false"}
    [:hstack
-    [:strong (string (length examples) (pluralize " examples" (length examples)))]
+    [:strong (string (length examples) (singularize " examples" (length examples)))]
     [:spacer]
     (if (get session :login)
       [:span
