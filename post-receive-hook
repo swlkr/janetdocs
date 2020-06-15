@@ -1,0 +1,38 @@
+#!/bin/sh
+
+app="janetdocs"
+working_tree="/home/sean/$app"
+now=$(date +"%Y%m%d-%H%M")
+port="8002"
+
+while read oldrev newrev ref
+do
+    echo "Master ref received.  Deploying master branch to production..."
+    echo "Shutting down server..."
+    pkill -f '$app'
+    echo "Cloning new files"
+    git --work-tree=$working_tree --git-dir=/home/sean/git/$app.git checkout -f
+    echo "Tagging release"
+    # git tag release_$now master
+    cd $working_tree
+    echo "Migrating database"
+    DATABASE_URL=/home/sean/janetdocs/janetdocs.sqlite3 joy migrate
+    echo "Running jpm deps"
+    # jpm deps
+    echo "Deleting old asset bundles"
+    rm /home/sean/$app/public/bundle*
+    echo "Generating new bundles"
+    joy bundle
+    echo "Restarting server"
+    bash -c "exec -a $app janet main.janet $port &> app.log &"
+
+    echo "   /==============================="
+    echo "   | DEPLOYMENT COMPLETED"
+    echo "   | Target branch: master"
+    echo "   | Target folder: $working_tree"
+    echo "   | Tag name     : release_$now"
+    echo "   \=============================="
+
+done
+
+exit 0
