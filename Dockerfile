@@ -31,4 +31,9 @@ USER $USER
 WORKDIR /var/app
 COPY . ./
 
+ARG DEPS=false
+USER root
+RUN jpm deps
+USER $USER
+
 EXPOSE 9003
