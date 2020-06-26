@@ -25,7 +25,7 @@
 
 
 (defn main [& args]
-  (def port (get args 1 "9001"))
+  (def port (get args 1 (dotenv/env :port)))
 
   (db/connect)
   (server app port) # stops listening on SIGINT
