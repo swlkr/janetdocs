@@ -19,10 +19,7 @@ RUN git clone https://github.com/janet-lang/janet.git /tmp/janet && \
 RUN chmod 777 /usr/local/lib/janet
 
 # Use jpm to install joy
-
-RUN jpm install joy
-
-RUN chown -R $USER:$GROUP /usr/local/lib/janet/joy
+RUN chown -R $USER:$GROUP /usr/local/lib/janet
 
 # Create a place to mount or copy in your server
 RUN mkdir -p /var/app
@@ -31,11 +28,5 @@ RUN chown -R $USER:$GROUP /var/app
 USER $USER
 WORKDIR /var/app
 COPY . ./
-
-ARG DEPS=false
-USER root
-RUN jpm deps
-RUN chown -R $USER:$GROUP /usr/local/lib/janet
-USER $USER
 
 EXPOSE 9003
