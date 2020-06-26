@@ -23,6 +23,8 @@
                :layout layout
                :404 /404}))
 
+# migrate the database if necessary
+(db/migrate)
 
 (defn main [& args]
   (def port (get args 1 (dotenv/env :port)))
