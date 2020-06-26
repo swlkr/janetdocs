@@ -1,2 +1,2 @@
 web: janet main.janet
-release: joy migrate
+release: cd /var/app && joy migrate
