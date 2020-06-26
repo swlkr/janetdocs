@@ -39,3 +39,4 @@ RUN chown -R $USER:$GROUP /usr/local/lib/janet
 USER $USER
 
 EXPOSE 9003
+ENTRYPOINT ["janet"]
