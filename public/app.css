@@ -67,3 +67,7 @@ h2[responsive] {
     font-size: 1.5em;
   }
 }
+
+textarea {
+  font-family: monospace;
+}
