@@ -1,5 +1,6 @@
 (import joy :prefix "")
 (import ../helpers :prefix "")
+(import uri)
 
 
 (defn set-html [{:method method :input input :url url :ref ref}]
@@ -18,7 +19,7 @@
        [:code {:class "clojure"}
         (ex :body)]]
       [:hstack {:spacing "m" :align-x "right"}
-       [:a {:href (string "/" (ex :binding))}
+       [:a {:href (string "/" (uri/escape (ex :binding)))}
         (ex :binding)]
        [:a {:href (string "https://github.com/" (ex :login))}
         (ex :login)]]])])
