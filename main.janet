@@ -10,6 +10,7 @@
   [:delete "/sessions" :sessions/destroy]
   [:get "/github-auth" :home/github-auth]
   [:post "/searches" :home/searches]
+  [:get "/bindings/random" :examples/random]
   [:get "/bindings/:binding-id/examples/form" :examples/form]
   [:get "/bindings/:binding-id/examples/new" :examples/new]
   [:post "/bindings/:binding-id/examples" :examples/create]
