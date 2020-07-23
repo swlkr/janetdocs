@@ -1,6 +1,6 @@
 FROM alpine:3.7
 
-RUN apk add --no-cache build-base curl git curl-dev
+RUN apk add --no-cache build-base curl curl-dev git
 
 # Create a non-root user to run the app as
 ARG USER=app
