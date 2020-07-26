@@ -182,3 +182,15 @@
     (def binding (db/find :binding (example :binding-id)))
 
     (redirect (binding-show-url binding))))
+
+
+(defn random [request]
+  (let [binding (first (db/query (slurp "db/sql/random.sql")))]
+
+    (def html
+      [:vstack {:spacing "m"}
+       (binding-header binding)])
+
+    (if (xhr? request)
+      (text/html html)
+      html)))
