@@ -61,10 +61,13 @@
   (def session (get request :session {}))
 
   [:vstack {:spacing "l"}
-   [:hstack {:stretch ""}
+   [:hstack {:stretch "" :spacing "s"}
     [:a {:href (url-for :home/index)}
      "JanetDocs"]
     [:spacer]
+    [:a {:href (url-for :examples/random)}
+     "I'm feeling lucky"]
+
     (if (get session :login)
       [:hstack {:spacing "m"}
        (form-with request (action-for :sessions/destroy)
