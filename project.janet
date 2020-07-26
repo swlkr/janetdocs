@@ -13,12 +13,7 @@
   :entry "main.janet")
 
 (phony "server" []
-  (do
-    (os/shell "pkill -xf 'janet main.janet'")
-    (os/shell "janet main.janet")))
+  (os/shell "janet main.janet"))
 
 (phony "watch" []
-  (do
-    (os/shell "pkill -xf 'janet main.janet'")
-    (os/shell "janet main.janet &")
-    (os/shell "fswatch -o . | xargs -n1 -I{} ./watch")))
+  (os/shell "find . -name '*.janet' | entr -r -d janet main.janet"))
