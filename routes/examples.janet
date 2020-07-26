@@ -189,7 +189,8 @@
 
     (def html
       [:vstack {:spacing "m"}
-       (binding-header binding)])
+       (binding-header binding)
+       (index (merge request {:binding binding}))])
 
     (if (xhr? request)
       (text/html html)
