@@ -103,7 +103,10 @@
       [:vstack {:spacing "xl"}
        (menu request)
        body
-       [:spacer]]]]))
+       [:spacer]]
+      [:script {:data-goatcounter "https://janetdocs.goatcounter.com/count"
+                :async ""
+                :src "//gc.zgo.at/count.js"}]]]))
 
 
 (defn /404 [request]
