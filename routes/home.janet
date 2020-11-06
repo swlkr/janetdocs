@@ -7,29 +7,28 @@
 
 
 (defn index [request]
-  (def examples (db/query `select example.*, account.login as login, binding.name as binding
-                           from example
-                           join account on account.id = example.account_id
-                           join binding on binding.id = example.binding_id
-                           order by example.created_at desc limit 30`))
+  (let [examples (db/from :example
+                          :join/one [:account :binding]
+                          :order "example.created_at desc"
+                          :limit 30)]
 
-  [:vstack {:align-x "center" :stretch "" :spacing "l"
-            :x-data (string/format "searcher('%s')" (url-for :home/searches))}
-    [:h1
-     [:span "JanetDocs is a community documentation site for the "]
-     [:a {:href "https://janet-lang.org"} "Janet programming language"]]
-    [:input {:type "text" :name "token" :placeholder "search docs"
-             :autofocus ""
-             :style "width: 100%"
-             :x-model "token"
-             :x-on:keyup.debounce "search()"
-             :x-on:keydown.enter.prevent "go()"}]
-    [:div {:x-html "results" :style "width: 100%"}
-     "Loading..."]
+    [:vstack {:align-x "center" :stretch "" :spacing "l"
+              :x-data (string/format "searcher('%s')" (url-for :home/searches))}
+      [:h1
+       [:span "JanetDocs is a community documentation site for the "]
+       [:a {:href "https://janet-lang.org"} "Janet programming language"]]
+      [:input {:type "text" :name "token" :placeholder "search docs"
+               :autofocus ""
+               :style "width: 100%"
+               :x-model "token"
+               :x-on:keyup.debounce "search()"
+               :x-on:keydown.enter.prevent "go()"}]
+      [:div {:x-html "results" :style "width: 100%"}
+       "Loading..."]
 
-    [:vstack {:x-show "!token || token === ''"}
-     [:h3 "Recent examples"]
-     (examples/list examples)]])
+      [:vstack {:x-show "!token || token === ''"}
+       [:h3 "Recent examples"]
+       (examples/list examples)]]))
 
 
 (defn searches [request]

@@ -19,10 +19,10 @@
        [:code {:class "clojure"}
         (ex :body)]]
       [:hstack {:spacing "m" :align-x "right"}
-       [:a {:href (string "/" (uri/escape (ex :binding)))}
-        (ex :binding)]
-       [:a {:href (string "https://github.com/" (ex :login))}
-        (ex :login)]]])])
+       [:a {:href (string "/" (uri/escape (get-in ex [:binding :name])))}
+        (get-in ex [:binding :name])]
+       [:a {:href (string "https://github.com/" (get-in ex [:account :login]))}
+        (get-in ex [:account :login])]]])])
 
 
 (defn index [request]
