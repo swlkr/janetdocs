@@ -77,7 +77,7 @@
       [:hstack {:spacing "m"}
        [:a {:href (string/format "https://github.com/login/oauth/authorize?client_id=%s"
                                  (env :github-client-id))}
-        "Github sign in"]])]])
+        "GitHub sign in"]])]])
 
 
 (defn layout [{:body body :request request}]
