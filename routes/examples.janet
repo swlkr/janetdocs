@@ -24,6 +24,27 @@
        [:a {:href (string "https://github.com/" (ex :login))}
         (ex :login)]]])])
 
+(defn format-see-also-link [link]
+  (let [name (link :name)]
+    [:a {
+         :href (string "/" name)
+         :class "see-also"}
+     name])) 
+
+(defn see-also [binding-id]
+  (let [links (db/query `select 
+                          binding.name
+                         from link
+                         join 
+                           binding on link.target = binding.id
+                         where 
+                           link.source = ?
+                         order 
+                           by binding.name`
+                        [binding-id])]
+    (if (empty? links) 
+     []
+     [:hstack [:strong "See also:"] (map format-see-also-link links)])))
 
 (defn index [request]
   (def {:binding binding :session session} request)
@@ -35,6 +56,7 @@
                           [(binding :id)]))
 
   [:vstack {:spacing "xl" :x-data "{ editing: false, add: true, adding: false, examples: {} }" :@cancel-new "editing = false" :@cancel-edit "add = true" :@edit-example "add = false"}
+   (see-also (binding :id))
    [:hstack
     [:strong (string (length examples) (singularize " examples" (length examples)))]
     [:spacer]

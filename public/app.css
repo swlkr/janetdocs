@@ -71,3 +71,7 @@ h2[responsive] {
 textarea {
   font-family: monospace;
 }
+
+a.see-also {
+  margin-left: 10px;
+}
