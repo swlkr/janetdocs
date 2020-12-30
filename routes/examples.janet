@@ -221,15 +221,16 @@
 
 
 (defn export [request]
-  (let [examples (db/query `select example.body as example,
-                                   account.login as gh_username,
-                                   binding.name,
-                                   binding.docstring,
-                                   example.created_at
-                            from example
-                            join account on account.id = example.account_id
-                            join binding on binding.id = example.binding_id
-                            order by example.created_at desc`)]
+  (let [examples (->> (db/query `select example.body as example,
+                                        account.login as gh_username,
+                                        binding.name,
+                                        binding.docstring,
+                                        example.created_at
+                                 from example
+                                 join account on account.id = example.account_id
+                                 join binding on binding.id = example.binding_id
+                                 order by example.created_at desc`)
+                      (map |(update $ :docstring (partial string/format "%j"))))]
 
     @{:status 200
       :headers @{"Content-Type" "application/json; charset=utf-8"}
