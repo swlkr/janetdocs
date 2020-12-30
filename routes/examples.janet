@@ -30,20 +30,20 @@
     [:a {
          :href (string "/" name)
          :class "see-also"}
-     name])) 
+     name]))
 
 (defn see-also [binding-id]
-  (let [links (db/query `select 
+  (let [links (db/query `select
                           binding.name
                          from link
-                         join 
+                         join
                            binding on link.target = binding.id
-                         where 
+                         where
                            link.source = ?
-                         order 
+                         order
                            by binding.name`
                         [binding-id])]
-    (if (empty? links) 
+    (if (empty? links)
      []
      [:hstack [:strong "See also:"] (map format-see-also-link links)])))
 
@@ -221,16 +221,15 @@
 
 
 (defn export [request]
-  (let [examples (->> (db/query `select example.body as example,
-                                        account.login as gh_username,
-                                        binding.name,
-                                        binding.docstring,
-                                        example.created_at
-                                 from example
-                                 join account on account.id = example.account_id
-                                 join binding on binding.id = example.binding_id
-                                 order by example.created_at desc`)
-                      (map |(update $ :docstring (partial string/format "%q"))))]
+  (let [examples (db/query `select example.body as example,
+                                   account.login as gh_username,
+                                   binding.name,
+                                   binding.docstring,
+                                   example.created_at
+                            from example
+                            join account on account.id = example.account_id
+                            join binding on binding.id = example.binding_id
+                            order by example.created_at desc`)]
 
     @{:status 200
       :headers @{"Content-Type" "application/json; charset=utf-8"}
