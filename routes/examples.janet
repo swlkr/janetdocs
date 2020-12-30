@@ -1,6 +1,7 @@
 (import joy :prefix "")
 (import ../helpers :prefix "")
 (import uri)
+(import json)
 
 
 (defn set-html [{:method method :input input :url url :ref ref}]
@@ -217,3 +218,20 @@
     (if (xhr? request)
       (text/html html)
       html)))
+
+
+(defn export [request]
+  (let [examples (->> (db/query `select example.body as example,
+                                        account.login as gh_username,
+                                        binding.name,
+                                        binding.docstring,
+                                        example.created_at
+                                 from example
+                                 join account on account.id = example.account_id
+                                 join binding on binding.id = example.binding_id
+                                 order by example.created_at desc`)
+                      (map |(update $ :docstring (partial string/format "%q"))))]
+
+    @{:status 200
+      :headers @{"Content-Type" "application/json; charset=utf-8"}
+      :body (json/encode examples)}))
