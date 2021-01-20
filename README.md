@@ -1,6 +1,6 @@
 # janetdocs
 
-A community doTherecumentation site for the [janet](https://janet-lang.org) programming language
+A community documentation site for the [janet](https://janet-lang.org) programming language
 
 ## Install janet
 
