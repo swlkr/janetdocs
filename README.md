@@ -19,7 +19,7 @@ After janet is installed there are a few steps to get this project up and runnin
 1. Clone this repo
 
 ```sh
-git clone https://github.com/swlkr/janetdocs
+git clone https://github.com/swlkr/janetdocs.git
 ```
 
 2. Move `.env.sample` to `.env`
