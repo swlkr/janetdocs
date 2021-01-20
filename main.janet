@@ -14,6 +14,7 @@
   [:get "/examples/:id/edit" :examples/edit]
   [:patch "/examples/:id" :examples/patch]
   [:delete "/examples/:id" :examples/destroy]
+  [:get "/export.json" :examples/export]
   [:get "/*" :bindings/show])
 
 
