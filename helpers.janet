@@ -65,6 +65,7 @@
     [:a {:href (url-for :home/index)}
      "JanetDocs"]
     [:spacer]
+    [:a {:href (url-for :playground/home)} "Playground"]
     [:a {:href (url-for :examples/random)}
      "I'm feeling lucky"]
 
@@ -101,13 +102,14 @@
       [:script {:src "/js/_turbolinks.min.js" :defer "" :data-turbolinks-track "reload"}]
       [:script {:src "/_highlight.pack.js" :defer "" :data-turbolinks-track "reload"}]
       [:script {:src "/_app.js" :defer ""  :data-turbolinks-track "reload"}]
-      [:script {:src "/alpine.min.js" :defer "" :data-turbolinks-track "reload"}]]
+      [:script {:src "/alpine.min.js" :defer "" :data-turbolinks-track "reload"}]
+      ]
 
      [:body
-      [:vstack {:spacing "xl"}
+      [:vstack {:spacing "xl" :stretch ""}
        (menu request)
        body
-       [:spacer]]]]))
+       ]]]))
 
 
 (defn /404 [request]
