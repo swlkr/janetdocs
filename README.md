@@ -31,7 +31,7 @@ mv `.env.sample` `.env`
 
 3. Change the github client and secret ids to something real
 
-You can create your own github app or whatever it's called now to get your keys to get github sign in working
+You can create your own github oauth app or whatever it's called now to get your keys to get github sign in working
 
 4. Install deps
 
