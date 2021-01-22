@@ -109,7 +109,7 @@
       [:vstack {:spacing "xl" :stretch ""}
        (menu request)
        body
-       ]]]))
+       [:spacer]]]]))
 
 
 (defn /404 [request]

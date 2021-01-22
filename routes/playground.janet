@@ -4,14 +4,14 @@
 (defn playground [request code]
   #(def account (current-account request))
   (def html
-  [:vstack {:spacing "l" :stretch ""}
+  [:vstack {:spacing "l"}
     [:script {:src "/ace/ace.js"}]
     [:hstack {:spacing "s"}
         [:button {:id "run" :title="ctrl-enter"} "Run"]
         [:button {:id "format"} "Format"]
         [:spacer]]
-      [:div {:id "code" :class "hljs" :stretch ""} (raw code)]
-      [:pre {:id "output" :style "overflow: auto;"}]
+      [:div {:id "code" :class "hljs" :style "height:60vh;"} (raw code)]
+      [:pre {:id "output" :style "overflow:auto;"}]
       [:div {:id "hiddencode" :style "display:none;"}]
       [:div {:id "sporkformat" :style "display:none;"}
        (string (slurp "public/playground/fmt.janet"))]
