@@ -17,9 +17,9 @@ window.addEventListener("load", function (ev) {
 
     function doRunCode() {
         let outputEl = document.querySelector('#output');
-        outputEl.innerHTML = "running...";
         let code = window.editor.getValue();
-        setTimeout(function() {window.run_janet_code(code, outputEl)}, 0);
+        outputEl.innerHTML = "running...";
+        setTimeout(function() {window.run_janet_code(code, outputEl)}, 100);
     }
 
     function doFormatCode() {
