@@ -20,11 +20,11 @@
        [:code {:class "clojure"}
         (ex :body)]]
       [:hstack {:spacing "m" :align-x "right"}
-       [:a {:href (url-for :playground/example {:id (get ex :id)})} "Playground" ]
        [:a {:href (string "/" (uri/escape (get-in ex [:binding :name])))}
         (get-in ex [:binding :name])]
        [:a {:href (string "https://github.com/" (get-in ex [:account :login]))}
-        (get-in ex [:account :login])]]])])
+        (get-in ex [:account :login])]
+       [:a {:href (url-for :playground/example {:id (get ex :id)})} "Playground" ] ]])])
 
 (defn format-see-also-link [link]
   (let [name (link :name)]

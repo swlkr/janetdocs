@@ -5,14 +5,16 @@
   #(def account (current-account request))
   (def html
   [:vstack {:spacing "l" :stretch ""}
-    [:script {:src "https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/ace.min.js" :async "false"}]
-    [:script {:src "https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/mode-clojure.min.js" :async "false"}]
+    [:script {:src "/ace/ace.js"}]
     [:hstack {:spacing "s"}
         [:button {:id "run" :title="ctrl-enter"} "Run"]
         [:button {:id "format"} "Format"]
         [:spacer]]
       [:div {:id "code" :class "hljs" :stretch ""} (raw code)]
       [:pre {:id "output" :style "overflow: auto;"}]
+      [:div {:id "hiddencode" :style "display:none;"}]
+      [:div {:id "sporkformat" :style "display:none;"}
+       (string (slurp "public/playground/fmt.janet"))]
     [:script {:type "text/javascript" :src "/playground/playground.js" :async "false"}]
     [:script {:type "text/javascript" :src "/playground/janet.js" :async "false"}]
     [:script {:type "text/javascript" :src "/playground/jdocs_playground.js" :async "false"}] 

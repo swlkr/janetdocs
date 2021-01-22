@@ -99,7 +99,7 @@
       [:link {:rel "stylesheet" :href "/_pylon.css" :data-turbolinks-track "reload"}]
       [:link {:rel "stylesheet" :href "/_water.css" :data-turbolinks-track "reload"}]
       [:link {:rel "stylesheet" :href "/app.css" :data-turbolinks-track "reload"}]
-      [:script {:src "/js/_turbolinks.min.js" :defer "" :data-turbolinks-track "reload"}]
+      #[:script {:src "/js/_turbolinks.min.js" :defer "" :data-turbolinks-track "reload"}]
       [:script {:src "/_highlight.pack.js" :defer "" :data-turbolinks-track "reload"}]
       [:script {:src "/_app.js" :defer ""  :data-turbolinks-track "reload"}]
       [:script {:src "/alpine.min.js" :defer "" :data-turbolinks-track "reload"}]
@@ -113,6 +113,8 @@
 
 
 (defn /404 [request]
-  (layout {:request request
+  (def resp (layout {:request request
            :body [:center
                   [:h1 "Oops! 404!"]]}))
+  (put resp :status 404)
+  resp)
