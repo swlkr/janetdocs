@@ -15,6 +15,8 @@
   [:patch "/examples/:id" :examples/patch]
   [:delete "/examples/:id" :examples/destroy]
   [:get "/export.json" :examples/export]
+  [:get "/playground/example/:id" :playground/example]
+  [:get "/playground" :playground/home]
   [:get "/*" :bindings/show])
 
 

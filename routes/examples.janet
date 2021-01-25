@@ -23,7 +23,8 @@
        [:a {:href (string "/" (uri/escape (get-in ex [:binding :name])))}
         (get-in ex [:binding :name])]
        [:a {:href (string "https://github.com/" (get-in ex [:account :login]))}
-        (get-in ex [:account :login])]]])])
+        (get-in ex [:account :login])]
+       [:a {:href (url-for :playground/example {:id (get ex :id)})} "Playground" ] ]])])
 
 (defn format-see-also-link [link]
   (let [name (link :name)]
@@ -85,10 +86,11 @@
         [:pre {:x-show "!editing"}
          [:code {:class "clojure"}
           (ex :body)]]
-        [:hstack
+        [:hstack {:spacing "l"}
          [:a {:href (string "https://github.com/" (ex :login)) :x-show "!editing"}
           (ex :login)]
          [:spacer]
+         [:a {:href (url-for :playground/example {:id (get ex :id)})} "Playground" ]
          (when (= (get session :login)
                   (ex :login))
            [:hstack {:spacing "l"}
