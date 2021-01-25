@@ -96,14 +96,13 @@
       [:link {:rel "manifest" :href "/site.webmanifest"}]
       [:link {:rel "stylesheet" :href "/css/atom-one-light.css" :media "(prefers-color-scheme: no-preference), (prefers-color-scheme: light)"}]
       [:link {:rel "stylesheet" :href "/css/atom-one-dark.css" :media "(prefers-color-scheme: dark)"}]
-      [:link {:rel "stylesheet" :href "/_pylon.css" :data-turbolinks-track "reload"}]
-      [:link {:rel "stylesheet" :href "/_water.css" :data-turbolinks-track "reload"}]
-      [:link {:rel "stylesheet" :href "/app.css" :data-turbolinks-track "reload"}]
-      #[:script {:src "/js/_turbolinks.min.js" :defer "" :data-turbolinks-track "reload"}]
-      [:script {:src "/_highlight.pack.js" :defer "" :data-turbolinks-track "reload"}]
-      [:script {:src "/_app.js" :defer ""  :data-turbolinks-track "reload"}]
-      [:script {:src "/alpine.min.js" :defer "" :data-turbolinks-track "reload"}]
-      ]
+      [:link {:rel "stylesheet" :href "/_pylon.css"}]
+      [:link {:rel "stylesheet" :href "/_water.css"}]
+      [:link {:rel "stylesheet" :href "/app.css"}]
+      [:script {:src "/_highlight.pack.js" :defer ""}]
+      [:script {:src "/_app.js" :defer ""}]
+      [:script {:src "/alpine.min.js" :defer ""}]]
+
 
      [:body
       [:vstack {:spacing "xl" :stretch ""}
@@ -113,8 +112,7 @@
 
 
 (defn /404 [request]
-  (def resp (layout {:request request
-           :body [:center
-                  [:h1 "Oops! 404!"]]}))
-  (put resp :status 404)
-  resp)
+  (as-> (layout {:request request
+                 :body [:center
+                        [:h1 "Oops! 404!"]]}) ?
+        (put ? :status 404)))
