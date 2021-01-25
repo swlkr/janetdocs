@@ -105,7 +105,7 @@
 
 
      [:body
-      [:vstack {:spacing "xl" :stretch ""}
+      [:vstack {:spacing "xl"}
        (menu request)
        body
        [:spacer]]]]))
