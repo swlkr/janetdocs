@@ -12,8 +12,6 @@
      [:div {:id "code" :class "hljs" :style "height:60vh;"} (raw code)]
      [:pre {:id "output" :style "overflow:auto;"}]
      [:div {:id "hiddencode" :style "display:none;"}]
-     [:div {:id "sporkformat" :style "display:none;"}
-      (string (slurp "public/playground/fmt.janet"))]
      [:script {:type "text/javascript" :src "/playground/playground.js" :async "false"}]
      [:script {:type "text/javascript" :src "/playground/janet.js" :async "false"}]
      [:script {:type "text/javascript" :src "/playground/jdocs_playground.js" :async "false"}]])

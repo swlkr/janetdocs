@@ -3,7 +3,7 @@ window.addEventListener("load", function (ev) {
     window.editor = ace.edit("code");
     window.editor.session.setMode("ace/mode/clojure");
     window.editor.session.setOptions({
-        tabSize: true,
+        tabSize: 2,
         useSoftTabs: true,
     });
     editor.commands.addCommand({
@@ -24,19 +24,14 @@ window.addEventListener("load", function (ev) {
 
     function doFormatCode() {
         let userCode = window.editor.getValue();
-        let fmtCode = document.querySelector('#sporkformat').textContent;
-        if (fmtCode === null) {
-            alert("format failed: spork/format missing");
+        let code = "(import ./spork);" + "\n(def usercode ``````````" + userCode + "``````````) (spork/fmt/format-print usercode)";
+        let result = window.run_janet_for_output(code);
+        const suffix = 'RESULT> nil\n';
+        if (!result.endsWith(suffix)) {
+            alert("format failed: " + result);
         } else {
-            let code = fmtCode + "\n(def usercode ``````````" + userCode + "``````````) (format-print usercode)";
-            let result = window.run_janet_for_output(code);
-            const suffix = 'RESULT> nil\n';
-            if (!result.endsWith(suffix)) {
-                alert("format failed: " + result);
-            } else {
-                let formattedCode = result.slice(0,-suffix.length);
-                window.editor.setValue(formattedCode);
-            }
+            let formattedCode = result.slice(0,-suffix.length);
+            window.editor.setValue(formattedCode);
         }
     }
 
