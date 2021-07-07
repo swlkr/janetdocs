@@ -37,3 +37,5 @@ RUN jpm deps
 USER $USER
 
 EXPOSE 9003
+
+CMD ["janet", "main.janet"]

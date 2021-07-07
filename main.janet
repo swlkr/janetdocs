@@ -27,5 +27,5 @@
 
 (defn main [& args]
   (db/connect (env :database-url))
-  (server app (env :port))
+  (server app (env :port) "0.0.0.0")
   (db/disconnect))

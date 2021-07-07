@@ -1,0 +1,10 @@
+version: '3'
+services:
+  web:
+    tty: true
+    env_file: .env
+    volumes:
+      - .:/var/app
+    image: janetdocs
+    ports:
+      - "9003:9003"
